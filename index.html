@@ -1,50 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <title>FarmaTurni Messina</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <title>FarmaTurni Messina</title>
 </head>
 <body>
-    <h3>FarmaTurni Messina</h3>
-    <form class="container">
-        <div class="mb-3">
-            <label for="selectNumber" class="form-label">Select a number</label>
-            <select class="form-select" id="selectNumber">
-                <option value="1">Messina</option>
-                <option value="2">Milazzo</option>
-                <option value="3">Barcellona P.G.</option>
-                <option value="4">Fascia Jonica A</option>
-                <option value="5">Fascia Jonica B</option>
-                <option value="6">Fascia Jonica C</option>
-                <option value="7">Fascia Tirrenica A-1</option>
-                <option value="8">Fascia Tirrenica A-2</option>
-                <option value="9">Fascia Valle del Mela</option>
-                <option value="10">10</option>
-                <option value="11">10</option>
-                <option value="12">10</option>
-                <option value="13">10</option>
-                <option value="14">10</option>
-                <option value="15">10</option>
-                <option value="16">10</option>
-                <option value="17">10</option>
-                <option value="18">10</option>
-                <option value="19">10</option>
-                <option value="20">10</option>
-                <option value="21">10</option>
-                <option value="22">10</option>
-                <option value="23">10</option>
-                <option value="24">10</option>
-                <option value="25">10</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="date" class="form-label">Data</label>
-            <input type="date" class="form-control" id="date">
-        </div>
+  <div class="container mt-5">
+    <h3 class="text-center mb-4">FarmaTurni Messina</h3>
+    <form class="mb-4">
+      <div class="mb-3">
+        <label for="selectNumber" class="form-label">Seleziona una Zona</label>
+        <select class="form-select" id="zona">
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Data</label>
+        <input type="date" class="form-control" id="date" />
+      </div>
+      <div class="text-center">
+        <button id="btnRicerca" type="submit" class="btn btn-primary me-2">Ricerca</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+      </div>
     </form>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/app.js"></script>
+
+    <div class="card">
+      <div class="card-body text-center">
+        Effettua ricerca
+      </div>
+    </div>
+  </div>
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
