@@ -87,13 +87,15 @@ async function eseguiRicerca(event) {
   const cardBody = document.querySelector(".card-body");
   const zona = document.getElementById("zona").value;
   const data = document.getElementById("date").value;
+  //divido la data in modo da creare correttamente la query
+  const [year, month, day] = data.split("-");
 
   // Mostra il loader
   loader.classList.remove("hiddenElement");
 
   try {
     // Costruisci il target URL (modifica secondo la tua struttura)
-    const targetUrl = `http://www.ordinefarmacistimessina.it/newsite1/turni.html?riferimento_mappa=${zona}&data=${data}`;
+    const targetUrl = `http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp?day=${parseInt(day)}&month=${parseInt(month)}&year=${year}&orario=&riferimento_mappa=${zona}`;
 
     const doc = await fetchRemoteDOM(targetUrl);
 
