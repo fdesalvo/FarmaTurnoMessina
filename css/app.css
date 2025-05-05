@@ -14,3 +14,52 @@
 .hiddenElement {
   display: none !important;
 }
+
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-select .selected {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.custom-select .options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.custom-select .options div {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.custom-select .options div:hover {
+  background-color: #f0f0f0;
+}
+
+.custom-select.open .options {
+  display: block;
+}
