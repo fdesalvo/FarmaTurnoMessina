@@ -97,7 +97,7 @@ async function eseguiRicerca(event) {
     const doc = await fetchRemoteDOM(targetUrl);
 
     // Estrai il contenuto utile dal DOM (modifica secondo la struttura reale)
-    var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:nth-child(3)").innerText;
+    var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:last-child").innerText;
     risultato = parseFarmacieNotturne (risultato);
       
     // Mostra il risultato nella card
