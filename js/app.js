@@ -38,6 +38,7 @@ async function populateDati() {
   const targetUrl = "http://www.ordinefarmacistimessina.it/newsite1/departments-all.html";
   const riferimenti = await estraiRiferimenti(targetUrl); // aspetta la risposta
 
+  // Imposto i valori delle zone
   const select = document.getElementById("zona");
   Object.entries(riferimenti).forEach(([value, label]) => {
     const option = document.createElement("option");
@@ -50,6 +51,63 @@ async function populateDati() {
   const dateInput = document.getElementById("date");
   const today = new Date().toISOString().split("T")[0];
   dateInput.value = today;
+
+  // Imposto funzione sul pulsante ricerca
+  document.getElementById("btnRicerca").addEventListener("click", eseguiRicerca);
+}
+
+function parseFarmacieNotturne(rawText) {
+  const risultato = {};
+  
+  // Rimuove "NOTTURNO" e spazi iniziali/finali
+  rawText = rawText.replace(/^NOTTURNO\s*/i, '').trim();
+
+  // Divide le sezioni delle farmacie: 2 o più \n
+  const blocchi = rawText.split(/\n{2,}/);
+
+  blocchi.forEach(blocco => {
+    const righe = blocco.split('\n');
+    if (righe.length >= 2) {
+      const nome = righe[0].trim();
+      const indirizzo = righe.slice(1).join(' ').trim(); // se l'indirizzo va su più righe
+      if (nome && indirizzo) {
+        risultato[nome] = indirizzo;
+      }
+    }
+  });
+
+  return risultato;
+}
+
+async function eseguiRicerca(event) {
+  event.preventDefault(); // Evita il submit del form
+
+  const loader = document.getElementById("loader");
+  const cardBody = document.querySelector(".card-body");
+  const zona = document.getElementById("zona").value;
+  const data = document.getElementById("date").value;
+
+  // Mostra il loader
+  loader.classList.remove("hiddenElement");
+
+  try {
+    // Costruisci il target URL (modifica secondo la tua struttura)
+    const targetUrl = `http://www.ordinefarmacistimessina.it/newsite1/turni.html?riferimento_mappa=${zona}&data=${data}`;
+
+    const doc = await fetchRemoteDOM(targetUrl);
+
+    // Estrai il contenuto utile dal DOM (modifica secondo la struttura reale)
+    var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:nth-child(3)").innerText;
+    risultato = parseFarmacieNotturne (risultato);
+      
+    // Mostra il risultato nella card
+    cardBody.innerHTML = risultato || "Nessun risultato trovato.";
+  } catch (err) {
+    console.error("Errore durante la ricerca:", err);
+    cardBody.innerHTML = `<span class="text-danger">Errore durante la ricerca. Riprova.</span>`;
+  } finally {
+    loader.classList.add("hiddenElement");
+  }
 }
 
 async function initPage() {
