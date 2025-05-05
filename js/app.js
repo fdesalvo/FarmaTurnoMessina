@@ -25,7 +25,8 @@ async function estraiRiferimenti(targetUrl) {
 
   doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
     const url = new URL(a.href);
-    const id = url.searchParams.get('riferimento_mappa');
+    const rawId = url.searchParams.get('riferimento_mappa');
+    const id = rawId?.replace(/\D/g, '');
     if (id) {
       riferimenti[id] = a.textContent.trim();
     }
