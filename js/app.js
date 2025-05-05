@@ -80,6 +80,19 @@ function parseFarmacieNotturne(rawText) {
   return risultato;
 }
 
+function formattaRisultato (risultato) {
+  let html = '{<br>';
+  const entries = Object.entries(risultato);
+  entries.forEach(([key, value], index) => {
+    html += `&nbsp;&nbsp;<b>"${key}"</b>: "${value}"`;
+    if (index < entries.length - 1) html += ',';
+    html += '<br>';
+  });
+  html += '}';
+
+  return `<pre>${html}</pre>`;
+}
+
 async function eseguiRicerca(event) {
   event.preventDefault(); // Evita il submit del form
 
@@ -102,9 +115,9 @@ async function eseguiRicerca(event) {
     // Estrai il contenuto utile dal DOM (modifica secondo la struttura reale)
     var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:last-child").innerText;
     risultato = parseFarmacieNotturne (risultato);
-      
+    
     // Mostra il risultato nella card
-    cardBody.innerHTML = risultato || "Nessun risultato trovato.";
+    cardBody.innerHTML = formattaRisultato (risultato) || "Nessun risultato trovato.";
   } catch (err) {
     console.error("Errore durante la ricerca:", err);
     cardBody.innerHTML = `<span class="text-danger">Errore durante la ricerca. Riprova.</span>`;
