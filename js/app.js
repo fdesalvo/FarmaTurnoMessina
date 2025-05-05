@@ -60,7 +60,7 @@ async function initPage() {
   } finally {
     const loader = document.getElementById("loader");
     if (loader) {
-      loader.style.display = "none !important";
+      loader.classList.add("hidden");
     }
   }
 }
