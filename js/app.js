@@ -1,21 +1,22 @@
-async function estraiTesto(url) {
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+async function estraiTesto(urlP) {
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(urlP);
     const response = await fetch(proxyUrl);
     const data = await response.json();
     const parser = new DOMParser();
-    const doc = parser.parseFromString(data.contents, 'text/html');
-
+    const doc = parser.parseFromString(data.contents, data.content_type);
+    
+    data.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
+      const url = new URL(a.href);
+      const id = url.searchParams.get('riferimento_mappa');
+      if (id) {
+        riferimenti[id] = a.textContent.trim();
+      }
+    });
+    
+    console.log(riferimenti);
     return doc;
 }
 
-const htmlFarma = estraiTesto ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
 const riferimenti = {};
-htmlFarma.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
-  const url = new URL(a.href);
-  const id = url.searchParams.get('riferimento_mappa');
-  if (id) {
-    riferimenti[id] = a.textContent.trim();
-  }
-});
 
-console.log(riferimenti);
+const htmlFarma = estraiTesto ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
