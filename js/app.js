@@ -11,7 +11,7 @@ async function estraiTesto(urlP) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(data.contents, data.content_type);
     
-    data.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
+    doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
       const url = new URL(a.href);
       const id = url.searchParams.get('riferimento_mappa');
       if (id) {
