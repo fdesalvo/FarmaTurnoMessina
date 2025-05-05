@@ -23,7 +23,6 @@ async function fetchRemoteDOM(targetUrl) {
 function estraiRiferimenti (targetUrl) {
   fetchRemoteDOM(targetUrl)
     .then (doc => {
-
       doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
         const url = new URL(a.href);
         const id = url.searchParams.get('riferimento_mappa');
@@ -32,10 +31,30 @@ function estraiRiferimenti (targetUrl) {
         }
       });
     });
-  
-    console.log(riferimenti);
-
 }
 
+document.addEventListener("DOMContentLoaded", initPage);
 
-estraiRiferimenti ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
+function initPage() {
+  // Simula caricamento (puoi rimuovere il timeout se vuoi che sparisca subito)
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) {
+      loader.style.display = "none";
+    }
+    // Puoi inizializzare qui anche altri elementi, ad esempio popolare il select
+    populateZoneSelect();
+  }, 500); // Tempo simulato per il caricamento
+}
+
+function populateZoneSelect() {
+  estraiRiferimenti ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
+
+  const select = document.getElementById("zona");
+  Object.entries(riferimenti).forEach(([value, label]) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+  });
+}
