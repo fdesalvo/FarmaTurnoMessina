@@ -1,5 +1,4 @@
 const proxyUrl = "https://api.allorigins.win/raw?url=";
-var riferimenti = {};
 
 async function fetchRemoteDOM(targetUrl) {
   try {
@@ -20,35 +19,24 @@ async function fetchRemoteDOM(targetUrl) {
   }
 }
 
-function estraiRiferimenti (targetUrl) {
-  fetchRemoteDOM(targetUrl)
-    .then (doc => {
-      doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
-        const url = new URL(a.href);
-        const id = url.searchParams.get('riferimento_mappa');
-        if (id) {
-          riferimenti[id] = a.textContent.trim();
-        }
-      });
-    });
-}
+async function estraiRiferimenti(targetUrl) {
+  const riferimenti = {};
+  const doc = await fetchRemoteDOM(targetUrl);
 
-document.addEventListener("DOMContentLoaded", initPage);
-
-function initPage() {
-  // Simula caricamento (puoi rimuovere il timeout se vuoi che sparisca subito)
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) {
-      loader.style.display = "none";
+  doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
+    const url = new URL(a.href);
+    const id = url.searchParams.get('riferimento_mappa');
+    if (id) {
+      riferimenti[id] = a.textContent.trim();
     }
-    // Puoi inizializzare qui anche altri elementi, ad esempio popolare il select
-    populateZoneSelect();
-  }, 500); // Tempo simulato per il caricamento
+  });
+
+  return riferimenti;
 }
 
-function populateZoneSelect() {
-  estraiRiferimenti ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
+async function populateZoneSelect() {
+  const targetUrl = "http://www.ordinefarmacistimessina.it/newsite1/departments-all.html";
+  const riferimenti = await estraiRiferimenti(targetUrl); // aspetta la risposta
 
   const select = document.getElementById("zona");
   Object.entries(riferimenti).forEach(([value, label]) => {
@@ -58,3 +46,18 @@ function populateZoneSelect() {
     select.appendChild(option);
   });
 }
+
+async function initPage() {
+  try {
+    await populateZoneSelect(); // aspetta che il select venga popolato
+  } catch (err) {
+    console.error("Errore durante l'inizializzazione:", err);
+  } finally {
+    const loader = document.getElementById("loader");
+    if (loader) {
+      loader.style.display = "none";
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initPage);
