@@ -28,7 +28,7 @@ async function estraiRiferimenti(targetUrl) {
     const rawId = url.searchParams.get('riferimento_mappa');
     const id = rawId?.replace(/\D/g, '');
     if (id) {
-      riferimenti[id] = a.textContent.trim();
+      riferimenti[id] = a.textContent.trim() + " - " + a.parentNode.parentNode.childNodes[5].innerText.trim();
     }
   });
 
