@@ -23,7 +23,7 @@ async function estraiRiferimenti(targetUrl) {
   const riferimenti = {};
   const doc = await fetchRemoteDOM(targetUrl);
 
-  doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
+  doc.querySelectorAll('h5 a[href*="riferimento_mappa"]').forEach(a => {
     const url = new URL(a.href);
     const rawId = url.searchParams.get('riferimento_mappa');
     const id = rawId?.replace(/\D/g, '');
