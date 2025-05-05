@@ -1,3 +1,2 @@
 # FarmaTurnoMessina
-Per fare un test: 
-[Link di Test](https://fdesalvo.github.io/FarmaTurnoMessina/){target="_blank"}
+Per fare un test: <a href="https://fdesalvo.github.io/FarmaTurnoMessina/" target="_blank">Link di Test</a>
