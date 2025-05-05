@@ -1,16 +1,28 @@
-async function estraiTesto(urlP) {
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(urlP);
-    fetch(proxyUrl)
-        .then(response => {
-	        if (response.ok) return response.json()
-	        throw new Error('Network response was not ok.')
-        })
-        .then(data => {
-    const response = await fetch(proxyUrl);
-    const data = await response.json();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data.contents, data.content_type);
+const proxyUrl = "https://api.allorigins.win/raw?url=";
+var riferimenti = {};
+
+async function fetchRemoteDOM(targetUrl) {
+  try {
+    const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`);
+    if (!response.ok) {
+      throw new Error(`Errore nel fetch: ${response.status} ${response.statusText}`);
+    }
     
+    const htmlText = await response.text();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlText, 'text/html');
+
+    return doc;
+  } catch (err) {
+    console.error("Errore durante il recupero del DOM:", err);
+    throw err;
+  }
+}
+
+function estraiRiferimenti (targetUrl) {
+  var doc = fetchRemoteDOM(targetUrl);
+
     doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
       const url = new URL(a.href);
       const id = url.searchParams.get('riferimento_mappa');
@@ -20,10 +32,8 @@ async function estraiTesto(urlP) {
     });
     
     console.log(riferimenti);
-            });
-    return true;
+
 }
 
-const riferimenti = {};
 
-const htmlFarma = estraiTesto ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
+estraiRiferimenti ("http://www.ordinefarmacistimessina.it/newsite1/departments-all.html");
