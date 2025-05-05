@@ -21,16 +21,18 @@ async function fetchRemoteDOM(targetUrl) {
 }
 
 function estraiRiferimenti (targetUrl) {
-  var doc = fetchRemoteDOM(targetUrl);
+  fetchRemoteDOM(targetUrl)
+    .then (doc => {
 
-    doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
-      const url = new URL(a.href);
-      const id = url.searchParams.get('riferimento_mappa');
-      if (id) {
-        riferimenti[id] = a.textContent.trim();
-      }
+      doc.querySelectorAll('a[href*="riferimento_mappa"]').forEach(a => {
+        const url = new URL(a.href);
+        const id = url.searchParams.get('riferimento_mappa');
+        if (id) {
+          riferimenti[id] = a.textContent.trim();
+        }
+      });
     });
-    
+  
     console.log(riferimenti);
 
 }
