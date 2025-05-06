@@ -8,7 +8,7 @@ async function fetchRemoteDOM(targetUrl) {
     }
     
     const htmlText = await response.text();
-
+console.log(htmlText);
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlText, 'text/html');
 
