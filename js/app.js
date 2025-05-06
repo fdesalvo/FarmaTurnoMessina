@@ -1,4 +1,4 @@
-const proxyUrl = "https://api.allorigins.win/get?url=";
+const proxyUrl = "proxy.php?url=";
 
 async function fetchRemoteDOM(targetUrl) {
   try {
