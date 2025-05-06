@@ -1,5 +1,5 @@
 <?php
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 // Verifica se è stato passato il parametro `url`
 if (!isset($_GET['url']) || empty($_GET['url'])) {
@@ -37,6 +37,14 @@ if (curl_errno($ch)) {
 $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 $headers = substr($response, 0, $headerSize);
 $body = substr($response, $headerSize);
+
+// Detect encoding
+$encoding = mb_detect_encoding($body, ['UTF-8', 'ISO-8859-1', 'Windows-1252'], true);
+
+// Convert to UTF-8 if not already
+if ($encoding && strtoupper($encoding) !== 'UTF-8') {
+    $body = mb_convert_encoding($body, 'UTF-8', $encoding);
+}
 
 $statusInfo = [
     'url' => curl_getinfo($ch, CURLINFO_EFFECTIVE_URL),
