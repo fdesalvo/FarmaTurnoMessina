@@ -1,6 +1,6 @@
 const proxyUrl = "proxy.php?url=";
 
-async function fetchRemoteDOM(targetUrl, $mode) {
+async function fetchRemoteDOM(targetUrl, mode) {
   try {
     const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}&mode=${mode}`);
     if (!response.ok) {
