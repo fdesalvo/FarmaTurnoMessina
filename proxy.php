@@ -9,6 +9,7 @@ if (!isset($_GET['url']) || empty($_GET['url'])) {
 }
 
 $targetUrl = $_GET['url'];
+$mode = $_GET['mode'];
 
 // Valida l'URL
 if (!filter_var($targetUrl, FILTER_VALIDATE_URL)) {
@@ -55,7 +56,41 @@ $statusInfo = [
 curl_close($ch);
 
 // Costruzione della risposta JSON come AllOrigins
-echo json_encode([
-    'contents' => $body,
-    'status' => $statusInfo,
-]);
+switch ($mode) {
+    case 'riferimenti':
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true); // Evita warning per HTML malformato
+        $dom->loadHTML($body);
+        libxml_clear_errors();
+        
+        $xpath = new DOMXPath($dom);
+        $links = $xpath->query('//h5/a[contains(@href, "riferimento_mappa")]');
+        
+        $riferimenti = [];
+        
+        foreach ($links as $link) {
+            $href = $link->getAttribute('href');
+            parse_str(parse_url($href, PHP_URL_QUERY), $params);
+        
+            if (isset($params['riferimento_mappa'])) {
+                $rawId = $params['riferimento_mappa'];
+                $id = preg_replace('/\D/', '', $rawId); // Solo numeri
+        
+                // Recupera la descrizione associata (es. il testo della lista)
+                $parentLi = $link->parentNode->parentNode;
+                $descrizione = trim($parentLi->textContent);
+        
+                $riferimenti[$id] = trim($link->textContent) . ' - ' . $descrizione;
+            }
+        }
+        
+        echo json_encode($riferimenti, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    break;
+
+    default:
+        echo json_encode([
+            'contents' => $body,
+            'status' => $statusInfo,
+        ]);
+    break;
+}
