@@ -22,7 +22,7 @@ async function fetchRemoteDOM(targetUrl) {
 async function estraiRiferimenti(targetUrl) {
   const riferimenti = {};
   const doc = await fetchRemoteDOM(targetUrl);
-
+console.log(doc);
   doc.querySelectorAll('h5 a[href*="riferimento_mappa"]').forEach(a => {
     const url = new URL(a.href);
     const rawId = url.searchParams.get('riferimento_mappa');
