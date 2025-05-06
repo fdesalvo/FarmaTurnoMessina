@@ -1,8 +1,8 @@
 const proxyUrl = "proxy.php?url=";
 
-async function fetchRemoteDOM(targetUrl) {
+async function fetchRemoteDOM(targetUrl, $mode) {
   try {
-    const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}`);
+    const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}&mode=${mode}`);
     if (!response.ok) {
       throw new Error(`Errore nel fetch: ${response.status} ${response.statusText}`);
     }
@@ -21,7 +21,7 @@ console.log(htmlText);
 
 async function estraiRiferimenti(targetUrl) {
   const riferimenti = {};
-  const doc = await fetchRemoteDOM(targetUrl);
+  const doc = await fetchRemoteDOM(targetUrl, 'riferimenti');
 console.log(doc);
   doc.querySelectorAll('h5 a[href*="riferimento_mappa"]').forEach(a => {
     const url = new URL(a.href);
@@ -110,7 +110,7 @@ async function eseguiRicerca(event) {
     // Costruisci il target URL (modifica secondo la tua struttura)
     const targetUrl = `http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp?day=${parseInt(day)}&month=${parseInt(month)}&year=${year}&orario=&riferimento_mappa=${zona}`;
 
-    const doc = await fetchRemoteDOM(targetUrl);
+    const doc = await fetchRemoteDOM(targetUrl, 'risultati');
 
     // Estrai il contenuto utile dal DOM (modifica secondo la struttura reale)
     var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:last-child").innerText;
