@@ -1,15 +1,22 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-// Verifica se è stato passato il parametro `url`
-if (!isset($_GET['url']) || empty($_GET['url'])) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Parametro "url" mancante']);
-    exit;
-}
-
-$targetUrl = $_GET['url'];
 $mode = $_GET['mode'];
+
+switch ($mode) {
+    case 'riferimenti':
+        $targetUrl = 'http://www.ordinefarmacistimessina.it/newsite1/departments-all.html';
+    break;
+    case 'risultati':
+        $targetUrl = 'http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp';
+    break;
+ 
+    default:
+        http_response_code(400);
+        echo json_encode(['error' => 'Accesso negato']);
+        exit;
+    break;
+}
 
 // Valida l'URL
 if (!filter_var($targetUrl, FILTER_VALIDATE_URL)) {
@@ -84,7 +91,7 @@ switch ($mode) {
             }
         }
         
-        echo json_encode($riferimenti, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode($riferimenti, JSON_UNESCAPED_UNICODE);
     break;
 
     default:

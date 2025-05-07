@@ -1,43 +1,25 @@
-const proxyUrl = "proxy.php?url=";
+const proxyUrl = "proxy.php?mode=";
 
-async function fetchRemoteDOM(targetUrl, mode) {
+async function fetchRemoteDOM(mode) {
   try {
-    const response = await fetch(`${proxyUrl}${encodeURIComponent(targetUrl)}&mode=${mode}`);
+    const response = await fetch(`${proxyUrl}${mode}`);
     if (!response.ok) {
       throw new Error(`Errore nel fetch: ${response.status} ${response.statusText}`);
     }
     
-    const htmlText = await response.text();
-console.log(htmlText);
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlText, 'text/html');
-
-    return doc;
+    return await response.text();
   } catch (err) {
     console.error("Errore durante il recupero del DOM:", err);
     throw err;
   }
 }
 
-async function estraiRiferimenti(targetUrl) {
-  const riferimenti = {};
-  const doc = await fetchRemoteDOM(targetUrl, 'riferimenti');
-console.log(doc);
-  doc.querySelectorAll('h5 a[href*="riferimento_mappa"]').forEach(a => {
-    const url = new URL(a.href);
-    const rawId = url.searchParams.get('riferimento_mappa');
-    const id = rawId?.replace(/\D/g, '');
-    if (id) {
-      riferimenti[id] = a.textContent.trim() + " - " + a.parentNode.parentNode.childNodes[5].innerText.trim();
-    }
-  });
-
-  return riferimenti;
+async function estraiRiferimenti() {
+  return await fetchRemoteDOM('riferimenti');
 }
 
 async function populateDati() {
-  const targetUrl = "http://www.ordinefarmacistimessina.it/newsite1/departments-all.html";
-  const riferimenti = await estraiRiferimenti(targetUrl); // aspetta la risposta
+  const riferimenti = await estraiRiferimenti(); // aspetta la risposta
 
   // Imposto i valori delle zone
   const select = document.getElementById("zona");
