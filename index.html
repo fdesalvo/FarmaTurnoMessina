@@ -19,7 +19,7 @@
     <h3 class="text-center mb-4">FarmaTurni Messina a</h3>
     <form class="mb-4">
       <div class="mb-3">
-        <label for="selectNumber" class="form-label">Seleziona una Zona</label>
+        <label for="zona" class="form-label">Seleziona una Zona</label>
         <select class="form-select" id="zona"></select>
         <!--div class="custom-select-wrapper">
           <div class="custom-select">
@@ -29,6 +29,17 @@
           </div>
         </div>
         <input type="hidden" id="zona" name="zona" /-->
+      </div>
+      <div class="mb-3">
+        <label for="date" class="form-label">Fascia oraria</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fasciaOraria" id="notturno" value="1" checked>
+          <label class="form-check-label" for="notturno">Notturno</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="fasciaOraria" id="diurno" value="0">
+          <label class="form-check-label" for="diurno">Diurno</label>
+        </div>
       </div>
       <div class="mb-3">
         <label for="date" class="form-label">Data</label>
