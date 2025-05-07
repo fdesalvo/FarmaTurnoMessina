@@ -15,7 +15,7 @@ async function fetchRemoteDOM(mode) {
 }
 
 async function estraiRiferimenti() {
-  return await fetchRemoteDOM('riferimenti');
+  return JSON.parse(await fetchRemoteDOM('riferimenti'));
 }
 
 async function populateDati() {
