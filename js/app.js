@@ -40,6 +40,10 @@ function impostaSelect () {
 
       hiddenInput.value = value;
     });
+    //attivo primo elemento
+    if (item === dropdownItems[0]) {
+      item.click();
+    }
   });
 }
 
@@ -54,9 +58,7 @@ async function populateDati() {
     option.textContent = label;
     select.appendChild(option);
   });*/
-  const select = document.getElementById("zona");
   const ul = document.getElementById("customUl");
-  var i = 0;
   Object.entries(riferimenti).forEach(([value, label]) => {
     const li = document.createElement("li");
     var l = label.split(" - ");
@@ -65,10 +67,6 @@ async function populateDati() {
                       <div><em>${l[1]}</em></div>
                     </button>`;
     ul.appendChild(li);
-    if (i == 0) {
-      select.value = value;
-    }
-    i++;
   });
   //imposto azione
   impostaSelect ();
