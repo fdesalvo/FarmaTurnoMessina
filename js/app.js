@@ -1,4 +1,8 @@
 const proxyUrl = "proxy.php?mode=";
+const ua = navigator.userAgent;
+const isAndroid = /Android/i.test(ua);
+const isIOS = /iPhone|iPad|iPod/i.test(ua);
+const isMobile = isAndroid || isIOS;
 
 async function fetchRemoteDOM(mode) {
   try {
@@ -39,6 +43,28 @@ async function populateDati() {
   document.getElementById("btnRicerca").addEventListener("click", eseguiRicerca);
 }
 
+function createButton(text, href) {
+  return `<a href="${href}" target="_blank" class="btn btn-primary me-2">${text}</a>`;
+}
+
+function mettiPulsanti (farmacia) {
+  const query = encodeURIComponent(farmacia[1][0] + farmacia[1][2]);
+
+  if (!isMobile) {
+    // Desktop: solo Google Maps web
+    createButton("Apri con Google Maps", `https://www.google.com/maps/search/?api=1&query=${query}`);
+  } else if (isAndroid) {
+    // Android: Google Maps + Waze
+    createButton("Apri con Google Maps", `geo:0,0?q=${query}`);
+    createButton("Apri con Waze", `https://waze.com/ul?q=${query}`);
+  } else if (isIOS) {
+    // iOS: Apple Maps + Google Maps + Waze
+    createButton("Apri con Apple Maps", `maps://?q=${query}`);
+    createButton("Apri con Google Maps", `comgooglemaps://?q=${query}`);
+    createButton("Apri con Waze", `waze://?q=${query}`);
+  }  
+}
+
 function formattaRisultato (risultato) {
   let html = "";
   if (Array.isArray(risultato)) {
@@ -51,10 +77,16 @@ function formattaRisultato (risultato) {
                 ${farmacia[0]}
               </div>
               <div class="card-body">
-                <p class="card-text">Indirizzo: ${farmacia[1][0]}</p>
-                <p class="card-text">${farmacia[1][2]}</p>
-                <p class="card-text">${farmacia[1][1]}</p>
-                <a href="${farmacia.link_maps}" target="_blank" class="btn btn-primary">Apri su Maps</a>
+                <div class="row mb-3">
+                  <div class="col-10">
+                    <p class="card-text">Indirizzo: ${farmacia[1][0]}</p>
+                    <p class="card-text">${farmacia[1][2]}</p>
+                    <p class="card-text">${farmacia[1][1]}</p>
+                  </div>
+                  <div class="col-2">                
+                    ${mettiPulsanti(farmacia)}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
