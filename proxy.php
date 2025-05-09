@@ -120,9 +120,13 @@ switch ($mode) {
         $xpath = new DOMXPath($dom);
         $query = '///td/h2[contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")]';
         if ($fasciaOraria != 1) {
-            $query = '//td//h2[
+            /*$query = '//td//h2[
                 not(contains(translate(string(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")) and
                 not(contains(translate(string(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "TURNI FARMACIE"))
+            ]';*/
+            $query = '//td//h2[
+                not(contains(translate(string(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "TURNI FARMACIE"))
+                and not(translate(normalize-space(string(.)), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ") = "NOTTURNO")
             ]';
         }
         $nodes = $xpath->query($query);
