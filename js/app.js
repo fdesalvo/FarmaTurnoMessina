@@ -25,7 +25,7 @@ async function estraiRiferimenti() {
 function impostaSelect () {
   const dropdownItems = document.querySelectorAll('.dropdown-item');
   const buttonTextContainer = document.querySelector('#customSelect .custom-select-text');
-  const hiddenInput = document.getElementById('selectedValue');
+  const hiddenInput = document.getElementById('zona');
 
   dropdownItems.forEach(item => {
     item.addEventListener('click', () => {
