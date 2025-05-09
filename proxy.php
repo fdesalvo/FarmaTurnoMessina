@@ -118,7 +118,13 @@ switch ($mode) {
         libxml_clear_errors();
 
         $xpath = new DOMXPath($dom);
-        $query = '//h2['.($fasciaOraria != 1 ? "not(" : "").'contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")'.($fasciaOraria != 1 ? ")" : "").']';
+        $query = '///td/h2[contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")]';
+        if ($fasciaOraria != 1) {
+            $query = '//td//h2[
+                not(contains(translate(string(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")) and
+                not(contains(translate(string(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "TURNI FARMACIE"))
+            ]';
+        }
         $nodes = $xpath->query($query);
         if ($nodes->length === 0) {
             //array_push($risultati, "Nessuna farmacia trovata");
@@ -143,7 +149,12 @@ switch ($mode) {
 
                         $matches = array ($part1, $part2, $part3);
                     }
-                    array_push ($risultati, array (strip_tags ($y[0]), $matches));
+                    else {
+                        $matches = array (trim ($text), "", "");
+                    }
+                    if (trim(strip_tags ($y[0])) != '') {
+                        array_push ($risultati, array (strip_tags ($y[0]), $matches));
+                    }
                 }
             }
         }
