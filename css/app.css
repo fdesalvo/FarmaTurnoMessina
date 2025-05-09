@@ -23,13 +23,29 @@
   text-align: left;
 }
 
-.custom-select-button span {
+.custom-select-text {
   flex-grow: 1;
-  text-align: left;
+}
+
+.custom-select-text .line1 {
+  font-weight: bold;
+}
+
+.custom-select-text .line2 {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #e0e0e0;
 }
 
 .custom-caret {
   margin-left: auto;
+  padding-left: 0.5rem;
+}
+
+.dropdown-menu.scrollable-menu {
+  max-height: 250px;
+  overflow-y: auto;
+  width: 100%;
 }
 
 .dropdown-menu .dropdown-item {
