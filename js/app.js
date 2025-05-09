@@ -39,8 +39,24 @@ async function populateDati() {
   const today = new Date().toISOString().split("T")[0];
   dateInput.value = today;
 
+  sistemaAvviso ();
+
   // Imposto funzione sul pulsante ricerca
   document.getElementById("btnRicerca").addEventListener("click", eseguiRicerca);
+}
+
+function sistemaAvviso () {
+  const notaBene = document.getElementById("notaBene");
+  const data = document.getElementById("date").value;
+  const fasciaOraria = document.querySelector('input[name="fasciaOraria"]:checked').value;
+
+  var avviso = "N.B.: dalle 08:30 alle 20:00 del giorno selezionato";
+  if (fasciaOraria == 1) {
+    var dataIT = data.split("-")[2] + "/" + data.split("-")[1] + "/" + data.split("-")[0];
+    var data2IT = (new Date(new Date(data).setDate(new Date(data).getDate() + 1))).toISOString().split("T")[0].split("-")[2] + "/" + (new Date(new Date(data).setDate(new Date(data).getDate() + 1))).toISOString().split("T")[0].split("-")[1] + "/" + (new Date(new Date(data).setDate(new Date(data).getDate() + 1))).toISOString().split("T")[0].split("-")[0];
+    avviso = "N.B.: dalle 20:00 del " + dataIT + " alle 08:30 del " + data2IT;
+  }
+  notaBene.innerHTML = avviso;
 }
 
 function createButton(text, href) {
