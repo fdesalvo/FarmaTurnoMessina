@@ -121,7 +121,9 @@ switch ($mode) {
         $query = '//h2[contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")]';
         $nodes = $xpath->query($query);
         if ($nodes->length === 0) {
-            array_push($risultati, "Nessuna farmacia trovata");
+            //array_push($risultati, "Nessuna farmacia trovata");
+            echo "";
+            exit;
         } else {
             foreach ($nodes as $i => $node) {
                 // Per ottenere l'elemento padre <td> (se ti serve):
