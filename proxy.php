@@ -2,13 +2,23 @@
 header('Content-Type: application/json; charset=utf-8');
 
 $mode = $_GET['mode'];
+$fasciaOraria = $_GET['fasciaOraria'];
+$day = $_GET['day'];
+$month = $_GET['month'];
+$year = $_GET['year'];
+$riferimento_mappa = $_GET['riferimento_mappa'];
 
 switch ($mode) {
     case 'riferimenti':
         $targetUrl = 'http://www.ordinefarmacistimessina.it/newsite1/departments-all.html';
     break;
     case 'risultati':
-        $targetUrl = 'http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp';
+        $targetUrl = 'http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp'
+                   . '?day='.$day
+                   . '&month='.$month
+                   . '&year='.$year
+                   . '&orario='
+                   . '&riferimento_mappa='.$riferimento_mappa;
     break;
  
     default:
@@ -97,6 +107,48 @@ switch ($mode) {
         }
         
         echo json_encode($riferimenti, JSON_UNESCAPED_UNICODE);
+    break;
+
+    case 'risultati':
+        $risultati = array ();
+
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true); // Evita warning per HTML malformato
+        $dom->loadHTML($body);
+        libxml_clear_errors();
+
+        $xpath = new DOMXPath($dom);
+        $query = '//h2[contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")]';
+        $nodes = $xpath->query($query);
+        if ($nodes->length === 0) {
+            array_push($risultati, "Nessuna farmacia trovata");
+        } else {
+            foreach ($nodes as $i => $node) {
+                // Per ottenere l'elemento padre <td> (se ti serve):
+                $td = preg_split('/<img\b[^>]*>/i', $dom->saveHTML($node->parentNode));
+                $x = array_shift ($td);
+                foreach ($td as $x => $y) {
+                    $td[$x] = explode ("<br>", $y);
+                }
+                foreach ($td as $x => $y) {
+                    $text = $y[1];
+                    $matches = array ();
+                    $telefonoPos = stripos($text, 'Telefono');
+                    $capPos = stripos($text, 'Cap');
+
+                    if ($telefonoPos !== false && $capPos !== false) {
+                        $part1 = trim(substr($text, 0, $telefonoPos));
+                        $part2 = trim(substr($text, $telefonoPos, $capPos - $telefonoPos));
+                        $part3 = trim(substr($text, $capPos));
+
+                        $matches = array ($part1, $part2, $part3);
+                    }
+                    array_push ($risultati, array (strip_tags ($y[0]), $matches));
+                }
+            }
+        }
+
+        echo json_encode($risultati, JSON_UNESCAPED_UNICODE);
     break;
 
     default:

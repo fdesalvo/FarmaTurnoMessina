@@ -39,40 +39,30 @@ async function populateDati() {
   document.getElementById("btnRicerca").addEventListener("click", eseguiRicerca);
 }
 
-function parseFarmacieNotturne(rawText) {
-  const risultato = {};
-  
-  // Rimuove "NOTTURNO" e spazi iniziali/finali
-  rawText = rawText.replace(/^NOTTURNO\s*/i, '').trim();
-
-  // Divide le sezioni delle farmacie: 2 o più \n
-  const blocchi = rawText.split(/\n{2,}/);
-
-  blocchi.forEach(blocco => {
-    const righe = blocco.split('\n');
-    if (righe.length >= 2) {
-      const nome = righe[0].trim();
-      const indirizzo = righe.slice(1).join(' ').trim(); // se l'indirizzo va su più righe
-      if (nome && indirizzo) {
-        risultato[nome] = indirizzo;
-      }
-    }
-  });
-
-  return risultato;
-}
-
 function formattaRisultato (risultato) {
-  let html = '{<br>';
-  const entries = Object.entries(risultato);
-  entries.forEach(([key, value], index) => {
-    html += `&nbsp;&nbsp;<b>"${key}"</b>: "${value}"`;
-    if (index < entries.length - 1) html += ',';
-    html += '<br>';
-  });
-  html += '}';
-
-  return `<pre>${html}</pre>`;
+  let html = "";
+  if (Array.isArray(risultato)) {
+    risultato.forEach(farmacia => {
+      html += `
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                ${farmacia.nome}
+              </div>
+              <div class="card-body">
+                <p class="card-text">Indirizzo: ${farmacia.indirizzo}</p>
+                <p class="card-text">Comune: ${farmacia.comune}</p>
+                <p class="card-text">Telefono: ${farmacia.telefono}</p>
+                <a href="${farmacia.link_maps}" target="_blank" class="btn btn-primary">Apri su Maps</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+  return html;
 }
 
 async function eseguiRicerca(event) {
@@ -82,6 +72,7 @@ async function eseguiRicerca(event) {
   const cardBody = document.querySelector(".card-body");
   const zona = document.getElementById("zona").value;
   const data = document.getElementById("date").value;
+  const fasciaOraria = document.querySelector('input[name="fasciaOraria"]:checked').value;
   //divido la data in modo da creare correttamente la query
   const [year, month, day] = data.split("-");
 
@@ -90,21 +81,17 @@ async function eseguiRicerca(event) {
 
   try {
     // Costruisci il target URL (modifica secondo la tua struttura)
-    const targetUrl = `http://www.ordinefarmacistimessina.it/turni-farmacie/stampa.asp?day=${parseInt(day)}&month=${parseInt(month)}&year=${year}&orario=&riferimento_mappa=${zona}`;
+    const mode = `risultati&fasciaOraria=${fasciaOraria}&day=${parseInt(day)}&month=${parseInt(month)}&year=${year}&orario=&riferimento_mappa=${zona}`;
 
-    const doc = await fetchRemoteDOM(targetUrl, 'risultati');
+    var risultato = JSON.parse (await fetchRemoteDOM (mode));
 
-    // Estrai il contenuto utile dal DOM (modifica secondo la struttura reale)
-    var risultato = doc.querySelector("body > div > table > tbody > tr > td > table > tbody > tr > td > center > table > tbody > tr > td > table > tbody > tr > td:last-child").innerText;
-    risultato = parseFarmacieNotturne (risultato);
-    
     // Mostra il risultato nella card
-    cardBody.innerHTML = formattaRisultato (risultato) || "Nessun risultato trovato.";
+    cardBody.innerHTML = formattaRisultato (risultato) || "<span class='text-danger'>Nessun risultato trovato.</span>";
   } catch (err) {
     console.error("Errore durante la ricerca:", err);
     cardBody.innerHTML = `<span class="text-danger">Errore durante la ricerca. Riprova.</span>`;
   } finally {
-    loader.classList.add("hiddenElement");
+    loader.classList.add ("hiddenElement");
   }
 }
 
