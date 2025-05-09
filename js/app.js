@@ -44,7 +44,7 @@ async function populateDati() {
 }
 
 function createButton(text, href) {
-  return `<a href="${href}" target="_blank" class="btn btn-primary me-2">${text}</a>`;
+  return `<a href="${href}" target="_blank" class="btn btn-primary me-2 w-100">${text}</a>`;
 }
 
 function mettiPulsanti (farmacia) {
@@ -54,16 +54,16 @@ function mettiPulsanti (farmacia) {
 
   if (!isMobile) {
     // Desktop: solo Google Maps web
-    html += createButton("Apri con Google Maps", `https://www.google.com/maps/search/?api=1&query=${query}`);
+    html += createButton("Google Maps", `https://www.google.com/maps/search/?api=1&query=${query}`);
   } else if (isAndroid) {
     // Android: Google Maps + Waze
-    html += createButton("Apri con Google Maps", `geo:0,0?q=${query}`);
-    html += createButton("Apri con Waze", `https://waze.com/ul?q=${query}`);
+    html += createButton("Google Maps", `geo:0,0?q=${query}`);
+    html += createButton("Waze", `https://waze.com/ul?q=${query}`);
   } else if (isIOS) {
     // iOS: Apple Maps + Google Maps + Waze
-    html += createButton("Apri con Apple Maps", `maps://?q=${query}`);
-    html += createButton("Apri con Google Maps", `comgooglemaps://?q=${query}`);
-    html += createButton("Apri con Waze", `waze://?q=${query}`);
+    html += createButton("Apple Maps", `maps://?q=${query}`);
+    html += createButton("Google Maps", `comgooglemaps://?q=${query}`);
+    html += createButton("Waze", `waze://?q=${query}`);
   }
 
   return html;
@@ -82,10 +82,10 @@ function formattaRisultato (risultato) {
               </div>
               <div class="card-body">
                 <div class="row mb-3">
-                  <div class="col-8 text-start">
+                  <div class="col-8 col-md-12 text-start">
                     Indirizzo: ${farmacia[1][0]}<br>${farmacia[1][2]}<br>${farmacia[1][1]}
                   </div>
-                  <div class="col-4">                
+                  <div class="col-4 col-md-12">
                     ${mettiPulsanti(farmacia)}
                   </div>
                 </div>
