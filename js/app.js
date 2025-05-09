@@ -78,16 +78,14 @@ function formattaRisultato (risultato) {
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                ${farmacia[0]}
+                <b>${farmacia[0]}</b>
               </div>
               <div class="card-body">
                 <div class="row mb-3">
-                  <div class="col-10">
-                    <p class="card-text">Indirizzo: ${farmacia[1][0]}</p>
-                    <p class="card-text">${farmacia[1][2]}</p>
-                    <p class="card-text">${farmacia[1][1]}</p>
+                  <div class="col-8 text-start">
+                    Indirizzo: ${farmacia[1][0]}<br>${farmacia[1][2]}<br>${farmacia[1][1]}
                   </div>
-                  <div class="col-2">                
+                  <div class="col-4">                
                     ${mettiPulsanti(farmacia)}
                   </div>
                 </div>
