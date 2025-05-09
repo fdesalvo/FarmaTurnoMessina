@@ -118,7 +118,7 @@ switch ($mode) {
         libxml_clear_errors();
 
         $xpath = new DOMXPath($dom);
-        $query = '//h2[contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")]';
+        $query = '//h2['.($fasciaOraria != 1 ? "not(" : "").'contains(translate(normalize-space(.), "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "NOTTURNO")'.($fasciaOraria != 1 ? ")" : "").']';
         $nodes = $xpath->query($query);
         if ($nodes->length === 0) {
             //array_push($risultati, "Nessuna farmacia trovata");
