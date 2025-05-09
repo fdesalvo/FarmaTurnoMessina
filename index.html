@@ -23,9 +23,12 @@
         <!--select class="form-select" id="zona"></select-->
         <div class="dropdown w-100">
           <button class="btn btn-outline-dark dropdown-toggle custom-select-button" type="button" id="customSelect" data-bs-toggle="dropdown" aria-expanded="false">
-            <span>Seleziona un'opzione</span>
-            <ul class="dropdown-menu w-100" aria-labelledby="customSelect" id="customUl"></ul>
+            <div class="custom-select-text">
+              <div class="line1">Seleziona un'opzione</div>
+              <div class="line2">Sottotitolo</div>
+            </div>
           </button>
+          <ul class="dropdown-menu scrollable-menu" aria-labelledby="customSelect" id="customUl"></ul>
         </div>        
         <input type="hidden" id="zona" name="zona" />
       </div>

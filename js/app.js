@@ -24,19 +24,23 @@ async function estraiRiferimenti() {
 
 function impostaSelect () {
   const dropdownItems = document.querySelectorAll('.dropdown-item');
-  const buttonSpan = document.querySelector('#customSelect span');
-  const hiddenInput = document.getElementById('zona');
+  const buttonTextContainer = document.querySelector('#customSelect .custom-select-text');
+  const hiddenInput = document.getElementById('selectedValue');
 
   dropdownItems.forEach(item => {
     item.addEventListener('click', () => {
-      const boldText = item.querySelector('strong')?.textContent.trim() || '';
+      const bold = item.getAttribute('data-bold');
+      const sub = item.getAttribute('data-sub');
       const value = item.getAttribute('data-value');
 
-      buttonSpan.textContent = boldText;
+      buttonTextContainer.innerHTML = `
+        <div class="line1">${bold}</div>
+        <div class="line2">${sub}</div>
+      `;
+
       hiddenInput.value = value;
     });
   });
-
 }
 
 async function populateDati() {
@@ -56,7 +60,7 @@ async function populateDati() {
   Object.entries(riferimenti).forEach(([value, label]) => {
     const li = document.createElement("li");
     var l = label.split(" - ");
-    li.innerHTML = `<button class="dropdown-item" type="button" data-value="${value}">
+    li.innerHTML = `<button class="dropdown-item" type="button" data-value="${value}" data-bold="${l[0]}" data-sub="${l[1]}">
                       <div><strong>${l[0]}</strong></div>
                       <div><em>${l[1]}</em></div>
                     </button>`;
