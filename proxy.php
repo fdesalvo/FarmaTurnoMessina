@@ -122,8 +122,6 @@ switch ($mode) {
         $nodes = $xpath->query($query);
         if ($nodes->length === 0) {
             //array_push($risultati, "Nessuna farmacia trovata");
-            echo "";
-            exit;
         } else {
             foreach ($nodes as $i => $node) {
                 // Per ottenere l'elemento padre <td> (se ti serve):
