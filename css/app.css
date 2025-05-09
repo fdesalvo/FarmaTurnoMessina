@@ -15,51 +15,23 @@
   display: none !important;
 }
 
-.custom-select-wrapper {
-  position: relative;
+.custom-select-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  text-align: left;
 }
 
-.custom-select {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  cursor: pointer;
+.custom-select-button span {
+  flex-grow: 1;
+  text-align: left;
 }
 
-.custom-select .selected {
-  padding: 10px;
-  font-size: 16px;
-  color: #333;
+.custom-caret {
+  margin-left: auto;
 }
 
-.custom-select .options {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.custom-select .options div {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.custom-select .options div:hover {
-  background-color: #f0f0f0;
-}
-
-.custom-select.open .options {
-  display: block;
+.dropdown-menu .dropdown-item {
+  white-space: normal;
 }

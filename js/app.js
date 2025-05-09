@@ -22,17 +22,52 @@ async function estraiRiferimenti() {
   return JSON.parse(await fetchRemoteDOM('riferimenti'));
 }
 
+function impostaSelect () {
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  const buttonSpan = document.querySelector('#customSelect span');
+  const hiddenInput = document.getElementById('zona');
+
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const boldText = item.querySelector('strong')?.textContent.trim() || '';
+      const value = item.getAttribute('data-value');
+
+      buttonSpan.textContent = boldText;
+      hiddenInput.value = value;
+    });
+  });
+
+}
+
 async function populateDati() {
   const riferimenti = await estraiRiferimenti(); // aspetta la risposta
 
   // Imposto i valori delle zone
-  const select = document.getElementById("zona");
+  /*const select = document.getElementById("zona");
   Object.entries(riferimenti).forEach(([value, label]) => {
     const option = document.createElement("option");
     option.value = value;
     option.textContent = label;
     select.appendChild(option);
+  });*/
+  const select = document.getElementById("zona");
+  const ul = document.getElementById("customUl");
+  var i = 0;
+  Object.entries(riferimenti).forEach(([value, label]) => {
+    const li = document.createElement("li");
+    var l = label.split(" - ");
+    li.innerHTML = `<button class="dropdown-item" type="button" data-value="${value}">
+                      <div><strong>${l[0]}</strong></div>
+                      <div><em>${l[1]}</em></div>
+                    </button>`;
+    ul.appendChild(li);
+    if (i == 0) {
+      select.value = value;
+    }
+    i++;
   });
+  //imposto azione
+  impostaSelect ();
 
   // Imposta la data odierna
   const dateInput = document.getElementById("date");

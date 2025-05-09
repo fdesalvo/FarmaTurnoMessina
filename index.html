@@ -20,15 +20,14 @@
     <form class="mb-4">
       <div class="mb-3">
         <label for="zona" class="form-label">Seleziona una Zona</label>
-        <select class="form-select" id="zona"></select>
-        <!--div class="custom-select-wrapper">
-          <div class="custom-select">
-            <div class="selected" id="selected">Seleziona una zona</div>
-            <div class="options">
-            </div>
-          </div>
-        </div>
-        <input type="hidden" id="zona" name="zona" /-->
+        <!--select class="form-select" id="zona"></select-->
+        <div class="dropdown w-100">
+          <button class="btn btn-outline-dark dropdown-toggle custom-select-button" type="button" id="customSelect" data-bs-toggle="dropdown" aria-expanded="false">
+            <span>Seleziona un'opzione</span>
+            <ul class="dropdown-menu w-100" aria-labelledby="customSelect" id="customUl"></ul>
+          </button>
+        </div>        
+        <input type="hidden" id="zona" name="zona" />
       </div>
       <div class="mb-3">
         <label for="date" class="form-label">Fascia oraria</label>
