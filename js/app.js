@@ -43,6 +43,10 @@ async function populateDati() {
 
   // Imposto funzione sul pulsante ricerca
   document.getElementById("btnRicerca").addEventListener("click", eseguiRicerca);
+  document.getElementById("date").addEventListener("change", sistemaAvviso);
+  document.querySelectorAll('input[name="fasciaOraria"]').forEach(radio => {
+    radio.addEventListener('change', sistemaAvviso);
+  });
 }
 
 function sistemaAvviso () {
@@ -60,7 +64,7 @@ function sistemaAvviso () {
 }
 
 function createButton(text, href) {
-  return `<a href="${href}" target="_blank" class="btn btn-primary me-2 w-100">${text}</a>`;
+  return `<a href="${href}" target="_blank" class="btn btn-primary mb-2 w-100">${text}</a>`;
 }
 
 function mettiPulsanti (farmacia) {
@@ -98,7 +102,7 @@ function formattaRisultato (risultato) {
               </div>
               <div class="card-body">
                 <div class="row mb-3">
-                  <div class="col-12 col-xl-8 text-start">
+                  <div class="col-12 col-xl-8 text-start mb-2">
                     Indirizzo: ${farmacia[1][0]}<br>${farmacia[1][2]}<br>${farmacia[1][1]}
                   </div>
                   <div class="col-12 col-xl-4">
