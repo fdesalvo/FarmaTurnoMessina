@@ -48,12 +48,12 @@ function formattaRisultato (risultato) {
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                ${farmacia.nome}
+                ${farmacia[0]}
               </div>
               <div class="card-body">
-                <p class="card-text">Indirizzo: ${farmacia.indirizzo}</p>
-                <p class="card-text">Comune: ${farmacia.comune}</p>
-                <p class="card-text">Telefono: ${farmacia.telefono}</p>
+                <p class="card-text">Indirizzo: ${farmacia[1][0]}</p>
+                <p class="card-text">${farmacia[1][2]}</p>
+                <p class="card-text">${farmacia[1][1]}</p>
                 <a href="${farmacia.link_maps}" target="_blank" class="btn btn-primary">Apri su Maps</a>
               </div>
             </div>
