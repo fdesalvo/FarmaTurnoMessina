@@ -82,10 +82,10 @@ function formattaRisultato (risultato) {
               </div>
               <div class="card-body">
                 <div class="row mb-3">
-                  <div class="col-8 col-md-12 text-start">
+                  <div class="col-8 col-xl-8 col-md-12 text-start">
                     Indirizzo: ${farmacia[1][0]}<br>${farmacia[1][2]}<br>${farmacia[1][1]}
                   </div>
-                  <div class="col-4 col-md-12">
+                  <div class="col-4 col-xl-4 col-md-12">
                     ${mettiPulsanti(farmacia)}
                   </div>
                 </div>
