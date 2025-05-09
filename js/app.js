@@ -48,7 +48,7 @@ function createButton(text, href) {
 }
 
 function mettiPulsanti (farmacia) {
-  const query = encodeURIComponent(farmacia[1][0] + farmacia[1][2]);
+  const query = encodeURIComponent(farmacia[1][0] + " " + farmacia[1][2].replace ("Cap ", ""));
 
   var html = "";
 
