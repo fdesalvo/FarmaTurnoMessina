@@ -50,19 +50,23 @@ function createButton(text, href) {
 function mettiPulsanti (farmacia) {
   const query = encodeURIComponent(farmacia[1][0] + farmacia[1][2]);
 
+  var html = "";
+
   if (!isMobile) {
     // Desktop: solo Google Maps web
-    createButton("Apri con Google Maps", `https://www.google.com/maps/search/?api=1&query=${query}`);
+    html += createButton("Apri con Google Maps", `https://www.google.com/maps/search/?api=1&query=${query}`);
   } else if (isAndroid) {
     // Android: Google Maps + Waze
-    createButton("Apri con Google Maps", `geo:0,0?q=${query}`);
-    createButton("Apri con Waze", `https://waze.com/ul?q=${query}`);
+    html += createButton("Apri con Google Maps", `geo:0,0?q=${query}`);
+    html += createButton("Apri con Waze", `https://waze.com/ul?q=${query}`);
   } else if (isIOS) {
     // iOS: Apple Maps + Google Maps + Waze
-    createButton("Apri con Apple Maps", `maps://?q=${query}`);
-    createButton("Apri con Google Maps", `comgooglemaps://?q=${query}`);
-    createButton("Apri con Waze", `waze://?q=${query}`);
-  }  
+    html += createButton("Apri con Apple Maps", `maps://?q=${query}`);
+    html += createButton("Apri con Google Maps", `comgooglemaps://?q=${query}`);
+    html += createButton("Apri con Waze", `waze://?q=${query}`);
+  }
+
+  return html;
 }
 
 function formattaRisultato (risultato) {
